@@ -16,12 +16,12 @@
 	  	<ion-item *ngFor="let item of items" (click)="itemSelected(item)">
 	  		
 	  		<ion-icon *ngIf="item.status == 'PAGO'" item-left name="checkmark-circle" color="secondary"></ion-icon>	  		
-	  		<ion-icon *ngIf="item.status == 'ATRASADO'" item-left name="alert" color="danger"></ion-icon>
-	  		<ion-icon *ngIf="item.status == 'PENDENTE'" item-left name="warning" color="primary"></ion-icon>
+	  		<ion-icon *ngIf="item.status == 'PENDENTE' && item.due_date < _now" item-left name="alert" color="danger"></ion-icon>
+	  		<ion-icon *ngIf="item.status == 'PENDENTE' && item.due_date >= _now" item-left name="warning" color="primary"></ion-icon>
 
 	  	  	<h3>{{ item.title }}</h3>
-	      	<p>Valor: R$ {{ item.value }} </p>
-	      	<ion-note item-right>{{ item.due_date }}</ion-note>
+	      	<p>Valor: {{ item.value | currency :'BRL':true}} </p>
+	      	<ion-note item-right>{{ item.due_date | date: 'dd/MM/yyyy'}}</ion-note>
 	    </ion-item>
 	</ion-list>
 

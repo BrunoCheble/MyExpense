@@ -9,7 +9,8 @@ import { Http, URLSearchParams } from '@angular/http';
 export class HomePage {
 	
 	public filter: string = new Date().toISOString();
-
+	private _now: string = new Date().toISOString();
+	
 	public items;
 
   	constructor(public navCtrl: NavController, private _http: Http) {
