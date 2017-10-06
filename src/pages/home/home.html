@@ -1,14 +1,36 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+    <ion-title>Listagem de despesas</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content>
+
+    <ion-item>
+    	<ion-label>Despesas do Mês</ion-label>
+      	<ion-datetime displayFormat="M/YYYY" pickerFormat="MMMM/YYYY" min="2017" max="2027" (ionChange)="changeFilter()" [(ngModel)]="filter"></ion-datetime>
+    </ion-item>
+
+	<ion-list>
+
+	  	<ion-item *ngFor="let item of items" (click)="itemSelected(item)">
+	  		
+	  		<ion-icon *ngIf="item.status == 'PAGO'" item-left name="checkmark-circle" color="secondary"></ion-icon>	  		
+	  		<ion-icon *ngIf="item.status == 'ATRASADO'" item-left name="alert" color="danger"></ion-icon>
+	  		<ion-icon *ngIf="item.status == 'PENDENTE'" item-left name="warning" color="primary"></ion-icon>
+
+	  	  	<h3>{{ item.title }}</h3>
+	      	<p>Valor: R$ {{ item.value }} </p>
+	      	<ion-note item-right>{{ item.due_date }}</ion-note>
+	    </ion-item>
+	</ion-list>
+
+
+	<ion-card>
+	  <ion-card-header>
+	    Total este mês: R$
+	  </ion-card-header>
+	</ion-card>
+	
+
 </ion-content>
