@@ -13,24 +13,35 @@
 
 	<ion-list>
 
-	  	<ion-item *ngFor="let item of items" (click)="itemSelected(item)">
-	  		
-	  		<ion-icon *ngIf="item.status == 'PAGO'" item-left name="checkmark-circle" color="secondary"></ion-icon>	  		
-	  		<ion-icon *ngIf="item.status == 'PENDENTE' && item.due_date < _now" item-left name="alert" color="danger"></ion-icon>
-	  		<ion-icon *ngIf="item.status == 'PENDENTE' && item.due_date >= _now" item-left name="warning" color="primary"></ion-icon>
+		<ion-item-sliding *ngFor="let item of items">
+		    <ion-item>
+		  		<ion-icon *ngIf="item.status == 'PAGO'" item-left name="checkmark-circle" color="secondary"></ion-icon>	  		
+		  		<ion-icon *ngIf="item.status == 'PENDENTE' && item.due_date < _now" item-left name="alert" color="danger"></ion-icon>
+		  		<ion-icon *ngIf="item.status == 'PENDENTE' && item.due_date >= _now" item-left name="warning" color="primary"></ion-icon>
 
-	  	  	<h3>{{ item.title }}</h3>
-	      	<p>Valor: {{ item.value | currency :'BRL':true}} </p>
-	      	<ion-note item-right>{{ item.due_date | date: 'dd/MM/yyyy'}}</ion-note>
-	    </ion-item>
+		  	  	<h3>{{ item.title }}</h3>
+		      	<p>Valor: {{ item.value | currency :'BRL':true}} </p>
+		      	<ion-note item-right>{{ item.due_date | date: 'dd/MM/yyyy'}}</ion-note>
+		    </ion-item>
+
+		    <ion-item-options side="left">
+		      <button (click)="editItem(item)" ion-button color="primary"><ion-icon name="build"></ion-icon>Editar</button>
+		      <button (click)="deleteItem(item)" ion-button color="danger"><ion-icon name="trash"></ion-icon>Excluir</button>
+		    </ion-item-options>
+
+		    <ion-item-options side="right">
+		      <button (click)="updateStatusItem(item)" *ngIf="item.status == 'PAGO'" ion-button color="danger"><ion-icon item-left name="thumbs-down"></ion-icon>ERREI</button>
+		      <button (click)="updateStatusItem(item)" *ngIf="item.status == 'PENDENTE'" ion-button color="secondary"><ion-icon item-left name="thumbs-up"></ion-icon>PAGAR</button>
+		    </ion-item-options>
+	  	</ion-item-sliding>
+
 	</ion-list>
 
 
 	<ion-card>
 	  <ion-card-header>
-	    Total este mês: R$
+	    Total este mês: {{ total_expense | currency :'BRL':true}}
 	  </ion-card-header>
 	</ion-card>
 	
-
 </ion-content>
