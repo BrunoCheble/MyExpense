@@ -1,17 +1,28 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Listagem de despesas</ion-title>
+		
+		<ion-title>
+				<ion-select (ionChange)="changeFilter()" style="max-width:100%" [(ngModel)]="share">
+					<ion-option *ngFor="let share of shares" value="{{share.value}}" >{{share.text}}</ion-option>
+				</ion-select>
+		</ion-title>
+	
+		<ion-buttons end>
+			<button color="primary" (click)="datePicker.open()" ion-button>
+					<ion-datetime #datePicker displayFormat="M/YYYY" pickerFormat="MMMM/YYYY" min="2017" max="2027" (ionChange)="changeFilter()" [(ngModel)]="filter"></ion-datetime>
+			</button>
+		</ion-buttons>
+		
   </ion-navbar>
 </ion-header>
 
 <ion-content>
 
-    <ion-item>
-    	<ion-label>Despesas do Mês</ion-label>
-      	<ion-datetime displayFormat="M/YYYY" pickerFormat="MMMM/YYYY" min="2017" max="2027" (ionChange)="changeFilter()" [(ngModel)]="filter"></ion-datetime>
-    </ion-item>
+	<ion-refresher (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
 
-	<ion-list>
+	<ion-list ng-swipe-right="log()">
 
 		<ion-item-sliding *ngFor="let item of items">
 		    <ion-item>
@@ -20,27 +31,27 @@
 		  		<ion-icon *ngIf="item.status == 'PENDENTE' && item.due_date >= _now" item-left name="warning" color="primary"></ion-icon>
 
 		  	  	<h3>{{ item.title }}</h3>
-		      	<p>Valor: {{ item.value | currency :'BRL':true}} </p>
-		      	<ion-note item-right>{{ item.due_date | date: 'dd/MM/yyyy'}}</ion-note>
+		      	<p>Valor: {{ item.value | currency :'BRL':true}}</p>
+		      	<ion-note item-right text-right>{{ item.due_date | date: 'dd/MM/yyyy'}}<br/>{{item.orderCount}} / {{item.total}}</ion-note>
 		    </ion-item>
 
 		    <ion-item-options side="left">
-		      <button (click)="editItem(item)" ion-button color="primary"><ion-icon name="build"></ion-icon>Editar</button>
-		      <button (click)="deleteItem(item)" ion-button color="danger"><ion-icon name="trash"></ion-icon>Excluir</button>
+		      <button (click)="editExpense(item)" *ngIf="item.status == 'PENDENTE'" ion-button color="primary"><ion-icon name="build"></ion-icon>Editar</button>
+		      <button (click)="deleteExpense(item)" ion-button color="danger"><ion-icon name="trash"></ion-icon>Excluir</button>
 		    </ion-item-options>
 
-		    <ion-item-options side="right">
-		      <button (click)="updateStatusItem(item)" *ngIf="item.status == 'PAGO'" ion-button color="danger"><ion-icon item-left name="thumbs-down"></ion-icon>ERREI</button>
-		      <button (click)="updateStatusItem(item)" *ngIf="item.status == 'PENDENTE'" ion-button color="secondary"><ion-icon item-left name="thumbs-up"></ion-icon>PAGAR</button>
-		    </ion-item-options>
+		    <ion-item-options side="right" (ionSwipe)="updateStatusExpense(item)"></ion-item-options>
 	  	</ion-item-sliding>
 
 	</ion-list>
 
+	<ion-fab right bottom>
+	    <button (click)="createExpense()" ion-fab color="danger"><ion-icon name="add"></ion-icon></button>
+	</ion-fab>
 
 	<ion-card>
 	  <ion-card-header>
-	    Total este mês: {{ total_expense | currency :'BRL':true}}
+	    Total este mês: <span item-right>{{ total_expense | currency :'BRL':true}}</span>
 	  </ion-card-header>
 	</ion-card>
 	

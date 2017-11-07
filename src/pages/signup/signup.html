@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Identifique-se
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+
+    <ion-item>
+      <ion-label stacked>Nome</ion-label>
+      <ion-input type="text" [(ngModel)]="form.name" ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>E-mail</ion-label>
+      <ion-input type="text" [(ngModel)]="form.email"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <button (click)="createUser()" ion-button full large color="primary" icon-left><ion-icon name="checkmark"></ion-icon> Cadastrar</button>
+
+</ion-content>

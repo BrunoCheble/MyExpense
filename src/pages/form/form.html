@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Formulário de Despesas
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+
+    <ion-item>
+      <ion-label stacked>Título</ion-label>
+      <ion-input type="text" [(ngModel)]="form.title" ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Valor</ion-label>
+      <ion-input type="tel" [(ngModel)]="form.value"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Data de vencimento</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YY" [(ngModel)]="form.due_date"></ion-datetime>
+    </ion-item>
+
+    <ion-item *ngIf="form.id == ''">
+      <ion-label> Repetir?</ion-label>
+      <ion-toggle [(ngModel)]="repeatCtrl" checked="true"></ion-toggle>
+    </ion-item>
+
+    <ion-item *ngIf="repeatCtrl && form.id == ''">
+      <ion-label> Parcelado?</ion-label>
+      <ion-toggle [(ngModel)]="fixed" checked="false"></ion-toggle>
+    </ion-item>
+
+    <ion-item *ngIf="fixed && repeatCtrl && form.id == ''">
+      <ion-label stacked>Nº Pacelas</ion-label>
+      <ion-input min="1" max="120" type="tel" [(ngModel)]="form.repeat"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <button *ngIf="form.id == ''" (click)="createExpense()" ion-button full large color="primary" icon-left><ion-icon name="checkmark"></ion-icon> Cadastrar</button>
+  <button *ngIf="form.id != ''" (click)="modalPropagation()" ion-button full large color="primary" icon-left><ion-icon name="checkmark"></ion-icon> Atualizar</button>
+
+</ion-content>
